@@ -1,12 +1,14 @@
+const path = require('path');
 const Database = require('better-sqlite3');
 
-// Tạo file database 
-const db = new Database('forms.db');
+const dbPath = process.env.NODE_ENV === 'production'
+  ? path.join('/app/data', 'forms.db')
+  : 'forms.db';
 
-// Bật foreign key support
+const db = new Database(dbPath);
+
 db.pragma('foreign_keys = ON');
 
-// Tạo các bảng
 db.exec(`
   CREATE TABLE IF NOT EXISTS forms (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
